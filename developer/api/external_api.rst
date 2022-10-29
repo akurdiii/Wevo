@@ -2,7 +2,7 @@
 External API
 ============
 
-Odoo is usually extended internally via modules, but many of its features and
+Wevo is usually extended internally via modules, but many of its features and
 all of its data are also available from the outside for external analysis or
 integration with various tools. Part of the :ref:`reference/orm/model` API is
 easily available over XML-RPC_ and accessible from a variety of languages.
@@ -13,13 +13,13 @@ Connection
 Configuration
 -------------
 
-If you already have an Odoo server installed, you can just use its parameters.
+If you already have an Wevo server installed, you can just use its parameters.
 
 .. important::
 
-    For Odoo Online instances (<domain>.odoo.com), users are created without a
-    *local* password (as a person you are logged in via the Odoo Online
-    authentication system, not by the instance itself). To use XML-RPC on Odoo
+    For Wevo Online instances (<domain>.wevo.me), users are created without a
+    *local* password (as a person you are logged in via the Wevo Online
+    authentication system, not by the instance itself). To use XML-RPC on Wevo
     Online instances, you will need to set a password on the user account you
     want to use:
 
@@ -30,7 +30,7 @@ If you already have an Odoo server installed, you can just use its parameters.
     * Set a :guilabel:`New Password` value then click :guilabel:`Change Password`.
 
     The *server url* is the instance's domain (e.g.
-    *https://mycompany.odoo.com*), the *database name* is the name of the
+    *https://mycompany.wevo.me*), the *database name* is the name of the
     instance (e.g. *mycompany*). The *username* is the configured user's login
     as shown by the *Change Password* screen.
 
@@ -69,7 +69,7 @@ API Keys
 
 .. versionadded:: 14.0
 
-Odoo has support for **api keys** and (depending on modules or settings) may
+Wevo has support for **api keys** and (depending on modules or settings) may
 **require** these keys to perform webservice operations.
 
 The way to use API Keys in your scripts is to simply replace your **password**
@@ -111,7 +111,7 @@ a new key and update all the places where you used the old one.
 Test database
 ~~~~~~~~~~~~~
 
-To make exploration simpler, you can also ask https://demo.odoo.com for a test
+To make exploration simpler, you can also ask https://demo.wevo.me for a test
 database:
 
 .. tabs::
@@ -119,13 +119,13 @@ database:
    .. code-tab:: python
 
       import xmlrpc.client
-      info = xmlrpc.client.ServerProxy('https://demo.odoo.com/start').start()
+      info = xmlrpc.client.ServerProxy('https://demo.wevo.me/start').start()
       url, db, username, password = info['host'], info['database'], info['user'], info['password']
 
    .. code-tab:: ruby
 
       require "xmlrpc/client"
-      info = XMLRPC::Client.new2('https://demo.odoo.com/start').call('start')
+      info = XMLRPC::Client.new2('https://demo.wevo.me/start').call('start')
       url, db, username, password = info['host'], info['database'], info['user'], info['password']
 
    .. group-tab:: PHP
@@ -133,7 +133,7 @@ database:
       .. code-block:: php
 
          require_once('ripcord.php');
-         $info = ripcord::client('https://demo.odoo.com/start')->start();
+         $info = ripcord::client('https://demo.wevo.me/start')->start();
          list($url, $db, $username, $password) = array($info['host'], $info['database'], $info['user'], $info['password']);
 
       .. note::
@@ -155,7 +155,7 @@ database:
          final XmlRpcClient client = new XmlRpcClient();
 
          final XmlRpcClientConfigImpl start_config = new XmlRpcClientConfigImpl();
-         start_config.setServerURL(new URL("https://demo.odoo.com/start"));
+         start_config.setServerURL(new URL("https://demo.wevo.me/start"));
          final Map<String, String> info = (Map<String, String>)client.execute(
              start_config, "start", emptyList());
 
@@ -173,7 +173,7 @@ database:
 Logging in
 ----------
 
-Odoo requires users of the API to be authenticated before they can query most
+Wevo requires users of the API to be authenticated before they can query most
 data.
 
 The ``xmlrpc/2/common`` endpoint provides meta-calls which don't require
@@ -242,7 +242,7 @@ Result:
 Calling methods
 ===============
 
-The second endpoint is ``xmlrpc/2/object``. It is used to call methods of odoo
+The second endpoint is ``xmlrpc/2/object``. It is used to call methods of wevo
 models via the ``execute_kw`` RPC function.
 
 Each call to ``execute_kw`` takes the following parameters:
@@ -302,9 +302,9 @@ Each call to ``execute_kw`` takes the following parameters:
 List records
 ------------
 
-Records can be listed and filtered via :meth:`~odoo.models.Model.search`.
+Records can be listed and filtered via :meth:`~wevo.models.Model.search`.
 
-:meth:`~odoo.models.Model.search` takes a mandatory
+:meth:`~wevo.models.Model.search` takes a mandatory
 :ref:`domain <reference/orm/domains>` filter (possibly empty), and returns the
 database identifiers of all records matching the filter.
 
@@ -384,10 +384,10 @@ Count records
 -------------
 
 Rather than retrieve a possibly gigantic list of records and count them,
-:meth:`~odoo.models.Model.search_count` can be used to retrieve
+:meth:`~wevo.models.Model.search_count` can be used to retrieve
 only the number of records matching the query. It takes the same
 :ref:`domain <reference/orm/domains>` filter as
-:meth:`~odoo.models.Model.search` and no other parameter.
+:meth:`~wevo.models.Model.search` and no other parameter.
 
 .. example::
 
@@ -428,9 +428,9 @@ only the number of records matching the query. It takes the same
 Read records
 ------------
 
-Record data are accessible via the :meth:`~odoo.models.Model.read` method,
+Record data are accessible via the :meth:`~wevo.models.Model.read` method,
 which takes a list of ids (as returned by
-:meth:`~odoo.models.Model.search`), and optionally a list of fields to
+:meth:`~wevo.models.Model.search`), and optionally a list of fields to
 fetch. By default, it fetches all the fields the current user can read,
 which tends to be a huge amount.
 
@@ -523,7 +523,7 @@ which tends to be a huge amount.
 List record fields
 ------------------
 
-:meth:`~odoo.models.Model.fields_get` can be used to inspect
+:meth:`~wevo.models.Model.fields_get` can be used to inspect
 a model's fields and check which ones seem to be of interest.
 
 Because it returns a large amount of meta-information (it is also used by client
@@ -603,14 +603,14 @@ updating a record).
 Search and read
 ---------------
 
-Because it is a very common task, Odoo provides a
-:meth:`~odoo.models.Model.search_read` shortcut which, as its name suggests, is
-equivalent to a :meth:`~odoo.models.Model.search` followed by a
-:meth:`~odoo.models.Model.read`, but avoids having to perform two requests
+Because it is a very common task, Wevo provides a
+:meth:`~wevo.models.Model.search_read` shortcut which, as its name suggests, is
+equivalent to a :meth:`~wevo.models.Model.search` followed by a
+:meth:`~wevo.models.Model.read`, but avoids having to perform two requests
 and keep ids around.
 
-Its arguments are similar to :meth:`~odoo.models.Model.search`'s, but it
-can also take a list of ``fields`` (like :meth:`~odoo.models.Model.read`,
+Its arguments are similar to :meth:`~wevo.models.Model.search`'s, but it
+can also take a list of ``fields`` (like :meth:`~wevo.models.Model.read`,
 if that list is not provided it will fetch all fields of matched records).
 
 .. example::
@@ -682,10 +682,10 @@ if that list is not provided it will fetch all fields of matched records).
 Create records
 --------------
 
-Records of a model are created using :meth:`~odoo.models.Model.create`. The
+Records of a model are created using :meth:`~wevo.models.Model.create`. The
 method creates a single record and returns its database identifier.
 
-:meth:`~odoo.models.Model.create` takes a mapping of fields to values, used
+:meth:`~wevo.models.Model.create` takes a mapping of fields to values, used
 to initialize the record. For any field which has a default value and is not
 set through the mapping argument, the default value will be used.
 
@@ -721,21 +721,21 @@ set through the mapping argument, the default value will be used.
 
 .. warning::
    While most value types are what would expect (integer for
-   :class:`~odoo.fields.Integer`, string for :class:`~odoo.fields.Char`
-   or :class:`~odoo.fields.Text`),
+   :class:`~wevo.fields.Integer`, string for :class:`~wevo.fields.Char`
+   or :class:`~wevo.fields.Text`),
 
-   - :class:`~odoo.fields.Date`, :class:`~odoo.fields.Datetime` and
-     :class:`~odoo.fields.Binary` fields use string values
-   - :class:`~odoo.fields.One2many` and :class:`~odoo.fields.Many2many`
+   - :class:`~wevo.fields.Date`, :class:`~wevo.fields.Datetime` and
+     :class:`~wevo.fields.Binary` fields use string values
+   - :class:`~wevo.fields.One2many` and :class:`~wevo.fields.Many2many`
      use a special command protocol detailed in :meth:`the documentation to
-     the write method <odoo.models.Model.write>`.
+     the write method <wevo.models.Model.write>`.
 
 Update records
 --------------
 
-Records can be updated using :meth:`~odoo.models.Model.write`. It takes
+Records can be updated using :meth:`~wevo.models.Model.write`. It takes
 a list of records to update and a mapping of updated fields to values similar
-to :meth:`~odoo.models.Model.create`.
+to :meth:`~wevo.models.Model.create`.
 
 Multiple records can be updated simultaneously, but they will all get the same
 values for the fields being set. It is not possible to perform
@@ -792,7 +792,7 @@ Delete records
 --------------
 
 Records can be deleted in bulk by providing their ids to
-:meth:`~odoo.models.Model.unlink`.
+:meth:`~wevo.models.Model.unlink`.
 
 .. example::
 
@@ -840,8 +840,8 @@ Records can be deleted in bulk by providing their ids to
 Inspection and introspection
 ----------------------------
 
-While we previously used :meth:`~odoo.models.Model.fields_get` to query a
-model and have been using an arbitrary model from the start, Odoo stores
+While we previously used :meth:`~wevo.models.Model.fields_get` to query a
+model and have been using an arbitrary model from the start, Wevo stores
 most model metadata inside a few meta-models which allow both querying the
 system and altering models and fields (with some limitations) on the fly over
 XML-RPC.
@@ -851,7 +851,7 @@ XML-RPC.
 ``ir.model``
 ~~~~~~~~~~~~
 
-Provides information about Odoo models via its various fields.
+Provides information about Wevo models via its various fields.
 
 ``name``
     a human-readable description of the model
@@ -861,13 +861,13 @@ Provides information about Odoo models via its various fields.
     whether the model was generated in Python code (``base``) or by creating
     an ``ir.model`` record (``manual``)
 ``field_id``
-    list of the model's fields through a :class:`~odoo.fields.One2many` to
+    list of the model's fields through a :class:`~wevo.fields.One2many` to
     :ref:`reference/webservice/inspection/fields`
 ``view_ids``
-    :class:`~odoo.fields.One2many` to the :ref:`reference/views` defined
+    :class:`~wevo.fields.One2many` to the :ref:`reference/views` defined
     for the model
 ``access_ids``
-    :class:`~odoo.fields.One2many` relation to the
+    :class:`~wevo.fields.One2many` relation to the
     :ref:`reference/security/acl` set on the model
 
 ``ir.model`` can be used to
@@ -983,11 +983,11 @@ Provides information about Odoo models via its various fields.
 ``ir.model.fields``
 ~~~~~~~~~~~~~~~~~~~
 
-Provides information about the fields of Odoo models and allows adding
+Provides information about the fields of Wevo models and allows adding
 custom fields without using Python code.
 
 ``model_id``
-    :class:`~odoo.fields.Many2one` to
+    :class:`~wevo.fields.Many2one` to
     :ref:`reference/webservice/inspection/models` to which the field belongs
 ``name``
     the field's technical name (used in ``read`` or ``write``)
@@ -1002,7 +1002,7 @@ custom fields without using Python code.
     enables the corresponding flag on the field
 ``groups``
     :ref:`field-level access control <reference/security/fields>`, a
-    :class:`~odoo.fields.Many2many` to ``res.groups``
+    :class:`~wevo.fields.Many2many` to ``res.groups``
 ``selection``, ``size``, ``on_delete``, ``relation``, ``relation_field``, ``domain``
     type-specific properties and customizations, see :ref:`the fields
     documentation <reference/orm/fields>` for details
